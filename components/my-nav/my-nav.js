@@ -8,10 +8,21 @@ export default class myNav extends HTMLElement{
     constructor(){
         super()
         this.attachShadow({mode:"open"});
-        Promise.resolve(myNav.components()).then(html => {
-            this.shadowRoot.innerHTML = html
-        })
         
+    }
+    handleEvent(e){
+        (e.type === "click") ?this.enviarWorker(e) : undefined;
+    }
+    enviarWorker(e){
+        console.log("soy el boton del Nav")
+        e.preventDefault()
+    }
+    connectedCallback(){
+        Promise.resolve(myNav.components()).then(html => {
+            this.shadowRoot.innerHTML = html;
+            this.myButton = this.shadowRoot.querySelector("button");
+            this.myButton.addEventListener("click", this.handleEvent.bind(this))
+        })
     }
 }
 customElements.define(name, myNav);
